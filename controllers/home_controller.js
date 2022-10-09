@@ -1,3 +1,8 @@
 module.exports.home = function(req,res){
-    return res.end('<h1> Express is up for codial')
+    console.log(req.cookies);
+    res.cookie('user_id',"whatsUpBabe");
+    return res.render('home', {
+        title:"Love"
+    });
 }
+
