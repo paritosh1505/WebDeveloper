@@ -8,6 +8,8 @@ router.get('/sign-in',userController.signIn);
 //we are posting the form hence we wil use post method and method is post on user_sign_in
 //router.get('/create/createSignUp',userController.create);
 router.post('/user/create',userController.create);
+router.post('/user/create-session',userController.createSession);
+
 
 module.exports=router;
 
