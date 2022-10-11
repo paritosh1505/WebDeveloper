@@ -3,6 +3,9 @@ const app = express();
 const port = 8080;
 const cookieParser = require('cookie-parser');
 const db = require('./config/mongoose');
+const session = require('express-session');
+const passport =require('passport');
+const passportLocal = require('../Codeial/config/passport-local-strategy');
 const contactVal = require('./models/contact');
 
 app.use(express.urlencoded());
@@ -10,27 +13,22 @@ app.use(cookieParser());//setting up cookie parser
 
 
 app.use('/',require('./routes'));
+
+
+//set up view engine
 app.set('view engine','ejs');
 app.set('views','./views');
 
-app.post('create_contact',function(req,res){
-contactVal.create({
-    nameval : req.body.nameval,
-    phone: req.body.phone
-},function(err,nameAnyThing){
-    if(err){
-        console.log("########Error##############");
-        return;
+app.use(session({
+    name:'codeial',
+    secret: 'secretKey',
+    saveUninitialized:false,
+    resave:false,
+    cookie:{
+        maxAge:(1000*60*100)
     }
-    console.log("*************",nameAnyThing,"****************");
-    return res.redirect('back');
-})
-});
+}));
 
-app.listen(port,function(err){
-    if(err){
-        console.log(`Error while running server`);
-    }
-    console.log(`Server is running on port : ${port}`);
-});
+app.use(passport.initialize());
+app.use(passport.session());
 
